@@ -8,14 +8,34 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @StateObject var viewModel = ContentViewModel()
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+            Form {
+                Section("Weight"){
+                    TextField("Weight", value: $viewModel.value.weight, formatter: NumberFormatter())
+                }
+
+                Section("Height"){
+                    TextField("Height", value: $viewModel.value.height, formatter: NumberFormatter())
+                }
+
+                Button("Calculate") {
+                    viewModel.doCalculate()
+                }
+                .listRowBackground(Color.clear)
+                .buttonStyle(.borderedProminent)
+
+                Section("Result") {
+                    VStack(alignment: .leading) {
+                        Text(viewModel.value.resultTitle)
+                        Text(viewModel.value.resultDescription)
+                    }
+                }
+            }
         }
-        .padding()
     }
 }
 

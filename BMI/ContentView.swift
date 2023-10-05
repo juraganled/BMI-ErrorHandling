@@ -23,7 +23,7 @@ struct ContentView: View {
                 }
 
                 Button("Calculate") {
-                    viewModel.doCalculate()
+                    viewModel.computeResult()
                 }
                 .listRowBackground(Color.clear)
                 .buttonStyle(.borderedProminent)

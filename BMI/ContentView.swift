@@ -10,19 +10,24 @@ import SwiftUI
 struct ContentView: View {
     
     @StateObject var viewModel = ContentViewModel()
-    
+    @State var weightString = "0"
+    @State var heightString = "0"
     var body: some View {
         VStack {
             Form {
                 Section("Weight"){
-                    TextField("Weight", value: $viewModel.value.weight, formatter: NumberFormatter())
+                    TextField("Weight", text: $weightString)
+                        .keyboardType(.numberPad)
                 }
 
                 Section("Height"){
-                    TextField("Height", value: $viewModel.value.height, formatter: NumberFormatter())
+                    TextField("Height", text: $heightString)
+                        .keyboardType(.numberPad)
                 }
 
                 Button("Calculate") {
+                    viewModel.value.weight = Double(weightString) ?? 0
+                    viewModel.value.height = Double(heightString) ?? 0
                     viewModel.computeResult()
                 }
                 .listRowBackground(Color.clear)

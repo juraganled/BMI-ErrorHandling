@@ -16,3 +16,12 @@ struct BMI {
     var resultDescription: String = ""
     
 }
+
+enum BMIError: Error {
+    case weightNonNumber
+    case heightNonNumber
+    case weightZero
+    case heightZero
+    case weightHeightZero
+    case negativeOutcome
+}

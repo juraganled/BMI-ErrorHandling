@@ -11,18 +11,32 @@ class ContentViewModel : ObservableObject {
     
     @Published var value = BMI()
     
-    func computeResult() {
+    func computeResult(weightString: String, heightString: String) throws {
         value.resultDescription = "Please check your input!"
+        value.resultTitle = ""
+        guard let weight = Double(weightString) else {
+            throw BMIError.weightNonNumber
+        }
+        guard let height = Double(heightString) else {
+            throw BMIError.heightNonNumber
+        }
+        if (weight == 0) && (height == 0) {
+            throw BMIError.weightHeightZero
+        } else if (weight == 0) && (height > 0) {
+            throw BMIError.weightZero
+        } else if (weight > 0) && (height == 0) {
+            throw BMIError.heightZero
+        } else if (weight < 0) && (height > 0) {
+            throw BMIError.negativeOutcome
+        }
+        
+        value.weight = weight
+        value.height = height
+        
         if value.weight > 0 && value.height > 0 {
             value.bmi = calculateBMI(weight: value.weight, height: value.height)
             value.resultDescription = generateCategory(bmi: value.bmi)
             value.resultTitle = "Your BMI Index is \(value.bmi.rounded(toPlaces: 2)) kg/m2"
-        }else if (value.height == 0 && value.weight > 0){
-            value.resultTitle = "Invalid BMI Value (Height Zero)"
-        }else if (value.weight < 0 && value.height > 0){
-            value.resultTitle = "Invalid BMI Value (Negative Outcome)"
-        }else{
-            value.resultTitle = "Invalid BMI Value (BMI out of range)"
         }
     }
     
